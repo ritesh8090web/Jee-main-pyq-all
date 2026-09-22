@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voxify Studio — AI Voice Creator</title>
+<meta name="description" content="Voxify Studio — premium AI text to speech creator">
+<style>
+:root{
+  --bg:#07080d;--panel:#0d1018;--panel2:#111522;--text:#f8f9ff;--muted:#9299ae;
+  --line:#22283a;--accent:#8b5cf6;--cyan:#22d3ee;--green:#20e0a0;--red:#fb7185;
+  --shadow:0 30px 100px rgba(0,0,0,.42)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+background:
+radial-gradient(800px 450px at 12% -10%,rgba(139,92,246,.28),transparent 65%),
+radial-gradient(700px 400px at 95% 5%,rgba(34,211,238,.15),transparent 65%),var(--bg);min-height:100vh}
+body.light{--bg:#f5f7fb;--panel:#fff;--panel2:#f8f9fc;--text:#111827;--muted:#667085;--line:#e5e7ef;--shadow:0 25px 70px rgba(20,25,50,.12)}
+*{scrollbar-width:thin;scrollbar-color:#343a50 transparent}
+header{height:72px;position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);
+background:rgba(7,8,13,.72);backdrop-filter:blur(22px);display:flex;align-items:center;justify-content:space-between;padding:0 4.5%}
+.light header{background:rgba(255,255,255,.78)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-1px;font-size:21px}
+.logoMark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--cyan));box-shadow:0 0 30px #8b5cf655;font-size:17px}
+.logo b{background:linear-gradient(90deg,#b69cff,#67e8f9);-webkit-background-clip:text;color:transparent}
+.nav{display:flex;gap:8px;align-items:center}.nav button,.iconBtn{background:transparent;border:1px solid transparent;color:var(--muted);padding:9px 12px;border-radius:10px;cursor:pointer}
+.nav button:hover,.iconBtn:hover{border-color:var(--line);color:var(--text);background:var(--panel2)}
+.container{width:min(1240px,92%);margin:auto}.hero{text-align:center;padding:54px 0 28px}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid #3b315e;background:#171128;border-radius:999px;color:#c8b8ff;font-size:12px;font-weight:800}
+.light .pill{background:#f2edff}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+h1{font-size:clamp(38px,6vw,72px);line-height:.98;letter-spacing:-3px;margin:17px 0 14px}
+.gradient{background:linear-gradient(90deg,#fff 10%,#bba5ff 48%,#63e8f9 90%);-webkit-background-clip:text;color:transparent}
+.light .gradient{background:linear-gradient(90deg,#111827,#7048e8,#0891b2);-webkit-background-clip:text;color:transparent}
+.hero p{max-width:720px;margin:auto;color:var(--muted);font-size:16px;line-height:1.65}
+.studio{display:grid;grid-template-columns:minmax(0,1.55fr) 360px;gap:16px;margin-top:18px}
+.card{background:linear-gradient(145deg,rgba(18,21,33,.94),rgba(10,12,19,.96));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.light .card{background:linear-gradient(145deg,#fff,#f9fafc)}
+.cardHead{height:62px;padding:0 19px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.title{font-weight:850}.sub{font-size:11px;color:var(--muted);margin-top:3px}
+.editor{min-height:420px;position:relative}
+textarea{width:100%;height:420px;padding:24px 25px 60px;background:transparent;border:0;outline:0;color:var(--text);resize:none;font-size:18px;line-height:1.7}
+textarea::placeholder{color:#656c80}
+.editorTools{position:absolute;bottom:0;left:0;right:0;padding:13px 18px;display:flex;align-items:center;gap:8px;border-top:1px solid var(--line);background:rgba(8,10,16,.7);backdrop-filter:blur(12px)}
+.light .editorTools{background:rgba(255,255,255,.78)}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 13px;border-radius:11px;cursor:pointer;font-weight:750;transition:.18s}
+.btn:hover{transform:translateY(-1px);border-color:#4b526b}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.primary{border:0;background:linear-gradient(135deg,#8b5cf6,#6366f1);box-shadow:0 12px 32px #7c3aed35}.generate{margin-left:auto;min-width:180px}
+.count{font-size:11px;color:var(--muted);margin-left:3px}
+.side{padding:18px}.section{padding:0 0 18px;margin-bottom:18px;border-bottom:1px solid var(--line)}.section:last-child{border:0;margin:0}
+.label{font-size:11px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+select,.search{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);outline:0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{flex:1;min-width:75px}
+.chip.active{border-color:#8b5cf6;background:#1d1636;color:#d7caff}
+.rangeRow{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:9px 0 5px}.range{width:100%;accent-color:#8b5cf6}
+.status{padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--panel2);font-size:12px;color:var(--muted);line-height:1.45}
+.status strong{color:var(--text)}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);margin-right:7px}
+.player{margin-top:15px;padding:14px;border:1px solid var(--line);border-radius:15px;background:var(--panel2)}
+audio{width:100%;height:38px}.player small{display:block;color:var(--muted);margin-bottom:8px}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:15px 0 45px}.feature{padding:17px;border:1px solid var(--line);border-radius:18px;background:rgba(14,17,25,.72)}
+.light .feature{background:#fff}.ico{font-size:22px}.feature b{display:block;margin:8px 0 4px}.feature span{font-size:12px;color:var(--muted);line-height:1.5}
+.history{margin:0 0 25px}.historyHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.historyList{display:grid;gap:8px}.historyItem{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:var(--panel2)}
+.historyItem .htext{flex:1;min-width:0}.htext b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htext small{color:var(--muted)}
+footer{text-align:center;color:#626a7f;font-size:11px;padding:0 0 30px}
+.toast{position:fixed;right:18px;bottom:18px;z-index:50;padding:12px 15px;border:1px solid var(--line);border-radius:13px;background:#111522;color:#fff;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+.toast.show{opacity:1;transform:none}
+@media(max-width:900px){.studio{grid-template-columns:1fr}.features{grid-template-columns:1fr 1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:16px}.section{border-bottom:0;margin:0}.status,.player{grid-column:1/-1}}
+@media(max-width:600px){header{padding:0 4%}.nav button:not(#theme){display:none}.hero{padding-top:38px}h1{letter-spacing:-2px}.features{grid-template-columns:1fr}.side{display:block}.editor,textarea{min-height:360px;height:360px}.editorTools{flex-wrap:wrap}.generate{margin-left:0;width:100%}.count{margin-left:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logoMark">✦</div><span>Vox<b>ify</b></span></div>
+  <div class="nav"><button id="historyBtn">History</button><button id="theme">☼ Theme</button></div>
+</header>
+
+<main class="container">
+<section class="hero">
+  <div class="pill"><span class="pulse"></span> VOXIFY STUDIO • AI VOICE WORKSPACE</div>
+  <h1>Give your words a <span class="gradient">real voice.</span></h1>
+  <p>Write, tune, generate and download natural-sounding speech in one focused studio. Built for creators, students, reels, videos and voiceovers.</p>
+</section>
+
+<section class="studio">
+  <section class="card">
+    <div class="cardHead">
+      <div><div class="title">Voice Script</div><div class="sub">Write naturally — punctuation controls the rhythm.</div></div>
+      <button class="btn" id="clear">Clear</button>
+    </div>
+    <div class="editor">
+      <textarea id="text" maxlength="12000" placeholder="Start writing your script here…
+
+Try: “Namaste dosto! Aaj hum ek interesting topic ke baare mein baat karenge…”"></textarea>
+      <div class="editorTools">
+        <button class="btn" id="copy">Copy</button>
+        <button class="btn" id="sample">Demo script</button>
+        <span class="count" id="count">0 / 12000</span>
+        <button class="btn primary generate" id="speak">✦ Generate Voice</button>
+        <button class="btn" id="download" disabled>↓ MP3</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="card side">
+    <div class="section">
+      <div class="label">AI Voice</div>
+      <select id="voice"><option>Loading voice library…</option></select>
+      <div style="height:8px"></div>
+      <input class="search" id="voiceSearch" placeholder="⌕ Search voice or language">
+    </div>
+
+    <div class="section">
+      <div class="label">Language</div>
+      <select id="lang">
+        <option value="all">All available voices</option>
+        <option value="en">English</option><option value="hi">Hindi</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <div class="label">Voice type</div>
+      <div class="chips">
+        <button class="btn chip active" data-gender="all">All</button>
+        <button class="btn chip" data-gender="female">♀ Female</button>
+        <button class="btn chip" data-gender="male">♂ Male</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="rangeRow"><span>Speed</span><b id="speedVal">1.00×</b></div>
+      <input class="range" id="speed" type="range" min=".5" max="2" value="1" step=".05">
+      <div class="rangeRow"><span>Pitch</span><b id="pitchVal">1.00</b></div>
+      <input class="range" id="pitch" type="range" min=".5" max="2" value="1" step=".05">
+    </div>
+
+    <div class="status"><span class="dot"></span><strong id="status">Starting studio…</strong><br><span id="statusSub">Connecting to the voice engine.</span></div>
+    <div class="player" id="playerBox" style="display:none"><small>Generated preview</small><audio id="audio" controls></audio></div>
+  </aside>
+</section>
+
+<section class="features">
+  <div class="feature"><div class="ico">⚡</div><b>Fast generation</b><span>Long scripts are automatically split into manageable voice chunks.</span></div>
+  <div class="feature"><div class="ico">🌍</div><b>Multi-language</b><span>Filter the voices available from your connected voice engine.</span></div>
+  <div class="feature"><div class="ico">🎛️</div><b>Fine control</b><span>Adjust speed and pitch before generating your final MP3.</span></div>
+  <div class="feature"><div class="ico">🔐</div><b>Creator-first</b><span>Your script stays in this page unless it is sent to the configured TTS API.</span></div>
+</section>
+
+<section class="history" id="history">
+  <div class="historyHead"><div><div class="title">Recent scripts</div><div class="sub">Saved locally on this device</div></div><button class="btn" id="clearHistory">Clear history</button></div>
+  <div class="historyList" id="historyList"></div>
+</section>
+<footer>Voxify Studio • Premium browser voice workspace</footer>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const API='https://ahm7xmakki.com';
+const text=document.getElementById('text'),voiceSel=document.getElementById('voice'),lang=document.getElementById('lang');
+const speed=document.getElementById('speed'),pitch=document.getElementById('pitch'),status=document.getElementById('status');
+const statusSub=document.getElementById('statusSub'),speakBtn=document.getElementById('speak'),downloadBtn=document.getElementById('download');
+const audio=document.getElementById('audio'),playerBox=document.getElementById('playerBox'),voiceSearch=document.getElementById('voiceSearch');
+let voices=[],selectedGender='all',generatedBlob=null,generatedUrl=null;
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),2200)}
+function setStatus(a,b=''){status.textContent=a;statusSub.textContent=b}
+function splitText(s,max=1800){
+  const out=[];let rest=s.trim();
+  while(rest.length>max){
+    let cut=Math.max(rest.lastIndexOf('. ',max),rest.lastIndexOf('! ',max),rest.lastIndexOf('? ',max),rest.lastIndexOf('। ',max));
+    if(cut<500)cut=rest.lastIndexOf(' ',max); if(cut<1)cut=max;
+    out.push(rest.slice(0,cut+1).trim());rest=rest.slice(cut+1).trim();
+  }
+  if(rest)out.push(rest);return out;
+}
+function filteredVoices(){
+  const q=voiceSearch.value.trim().toLowerCase(),wanted=lang.value.toLowerCase();
+  return voices.filter(v=>{
+    const l=(v.language||'').toLowerCase(),n=(v.name||'').toLowerCase();
+    const langOK=wanted==='all'||l.includes(wanted==='en'?'english':wanted==='hi'?'hindi':wanted);
+    const genderOK=selectedGender==='all'||(v.gender||'').toLowerCase()===selectedGender;
+    return langOK&&genderOK&&(!q||(n+' '+l+' '+(v.gender||'')).includes(q));
+  });
+}
+function renderVoices(){
+  const list=filteredVoices(),old=voiceSel.value;voiceSel.innerHTML='';
+  if(!list.length){voiceSel.innerHTML='<option value="">No matching voice</option>';return}
+  list.forEach(v=>{const o=document.createElement('option');o.value=v.index;o.textContent=`${v.name} • ${v.gender||'Voice'} • ${v.language||''}`;voiceSel.appendChild(o)});
+  if([...voiceSel.options].some(o=>o.value===old))voiceSel.value=old;
+}
+async function loadVoices(){
+  try{
+    setStatus('Loading voice library…','Connecting to your AI voice server.');
+    const r=await fetch(API+'/api/voices',{cache:'no-store'});if(!r.ok)throw Error();
+    const d=await r.json();voices=Array.isArray(d.voices)?d.voices:[];
+    renderVoices();setStatus('Studio ready',`${voices.length||'Available'} natural voices loaded.`);
+  }catch(e){voiceSel.innerHTML='<option value="">Voice server unavailable</option>';setStatus('Voice server unavailable','Check your internet/API server and retry.')}
+}
+async function generate(){
+  const value=text.value.trim();
+  if(!value)return setStatus('Add some text first','Write or paste a script in the editor.');
+  if(!voices.length)return setStatus('Voices are still loading','Please wait a moment and try again.');
+  if(!voiceSel.value)return setStatus('Select a voice','Choose an available voice from the list.');
+  speakBtn.disabled=true;downloadBtn.disabled=true;generatedBlob=null;
+  if(generatedUrl)URL.revokeObjectURL(generatedUrl);
+  setStatus('Generating your voice…','Please keep this page open while the audio is prepared.');
+  try{
+    const chunks=splitText(value),rate=Math.round((+speed.value-1)*100),p=Math.round((+pitch.value-1)*100),blobs=[];
+    for(let i=0;i<chunks.length;i++){
+      setStatus(`Generating ${i+1} / ${chunks.length}…`,`Preparing natural speech for your script.`);
+      const r=await fetch(API+'/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({voiceIndex:Number(voiceSel.value),text:chunks[i],pitch:p,rate})});
+      if(!r.ok)throw Error('TTS '+r.status);blobs.push(await r.blob());
+    }
+    generatedBlob=new Blob(blobs,{type:'audio/mpeg'});generatedUrl=URL.createObjectURL(generatedBlob);
+    audio.src=generatedUrl;playerBox.style.display='block';await audio.play().catch(()=>{});
+    downloadBtn.disabled=false;setStatus('Voice generated ✓','Preview is ready. You can download the MP3.');
+    saveHistory(value);toast('Voice generated successfully');
+  }catch(e){setStatus('Generation failed','Check the connection/API server and try again.')}
+  finally{speakBtn.disabled=false}
+}
+function saveHistory(v){
+  const arr=JSON.parse(localStorage.getItem('voxifyHistory')||'[]');
+  arr.unshift({text:v,when:new Date().toLocaleString()});localStorage.setItem('voxifyHistory',JSON.stringify(arr.slice(0,8)));renderHistory();
+}
+function renderHistory(){
+  const list=document.getElementById('historyList'),arr=JSON.parse(localStorage.getItem('voxifyHistory')||'[]');list.innerHTML='';
+  if(!arr.length){list.innerHTML='<div class="historyItem"><div class="htext"><b>No scripts yet</b><small>Your generated scripts will appear here.</small></div></div>';return}
+  arr.forEach((x,i)=>{const d=document.createElement('div');d.className='historyItem';d.innerHTML=`<div style="width:30px;height:30px;border-radius:9px;background:#1c1731;display:grid;place-items:center">✦</div><div class="htext"><b>${escapeHtml(x.text.slice(0,90))}</b><small>${escapeHtml(x.when)}</small></div><button class="btn" data-load="${i}">Load</button>`;list.appendChild(d)});
+  list.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{text.value=arr[+b.dataset.load].text;text.dispatchEvent(new Event('input'));window.scrollTo({top:0,behavior:'smooth'})});
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+text.addEventListener('input',()=>document.getElementById('count').textContent=`${text.value.length} / 12000`);
+speed.oninput=()=>document.getElementById('speedVal').textContent=(+speed.value).toFixed(2)+'×';
+pitch.oninput=()=>document.getElementById('pitchVal').textContent=(+pitch.value).toFixed(2);
+lang.onchange=renderVoices;voiceSearch.oninput=renderVoices;
+document.querySelectorAll('[data-gender]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-gender]').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedGender=b.dataset.gender;renderVoices()});
+document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(text.value);toast('Script copied')}catch(e){text.select();document.execCommand('copy')}};
+document.getElementById('sample').onclick=()=>{text.value='नमस्ते दोस्तों! Welcome to Voxify Studio. आज हम सीखेंगे कि अपने ideas को natural AI voice में कैसे बदलें। अपनी पसंद की voice चुनिए, speed और pitch सेट कीजिए, फिर Generate Voice दबाइए।';text.dispatchEvent(new Event('input'));toast('Demo script loaded')};
+document.getElementById('clear').onclick=()=>{text.value='';text.dispatchEvent(new Event('input'));audio.pause();playerBox.style.display='none';downloadBtn.disabled=true;toast('Editor cleared')};
+downloadBtn.onclick=()=>{if(!generatedUrl)return;const a=document.createElement('a');a.href=generatedUrl;a.download='voxify-studio-voice.mp3';document.body.appendChild(a);a.click();a.remove();toast('MP3 download started')};
+document.getElementById('clearHistory').onclick=()=>{localStorage.removeItem('voxifyHistory');renderHistory();toast('History cleared')};
+document.getElementById('historyBtn').onclick=()=>document.getElementById('history').scrollIntoView({behavior:'smooth'});
+document.getElementById('theme').onclick=()=>{document.body.classList.toggle('light');document.getElementById('theme').textContent=document.body.classList.contains('light')?'☾ Dark':'☼ Theme';localStorage.setItem('voxifyTheme',document.body.classList.contains('light')?'light':'dark')};
+if(localStorage.getItem('voxifyTheme')==='light'){document.body.classList.add('light');document.getElementById('theme').textContent='☾ Dark'}
+speakBtn.onclick=generate;renderHistory();loadVoices();
+</script>
+</body>
+</html>
